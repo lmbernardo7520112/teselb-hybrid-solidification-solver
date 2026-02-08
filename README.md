@@ -1,4 +1,4 @@
-# 🧭 teseLB — Solver Híbrido Quântico-Clássico para Solidificação
+# 🧭 teseLB — Hybrid Quantum-Classical Solver for Solidification
 
 ![OpenFOAM](https://img.shields.io/badge/OpenFOAM-v11-orange?style=for-the-badge&logo=cplusplus)
 ![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)
@@ -12,66 +12,66 @@
 
 ---
 
-## 📘 Descrição Geral
+## 📘 General Description
 
-O **teseLB** é um solver computacional avançado para simulação de processos de **solidificação de ligas metálicas**, integrando a robustez da **Dinâmica dos Fluidos Computacional (CFD)** clássica com o potencial emergente da **Computação Quântica**.
+**teseLB** is an advanced computational solver for simulating **metal alloy solidification processes**, integrating the robustness of classical **Computational Fluid Dynamics (CFD)** with the emerging potential of **Quantum Computing**.
 
-O projeto expande as capacidades do OpenFOAM (Finite Volume Method), introduzindo uma arquitetura híbrida onde sistemas lineares complexos podem ser exportados e resolvidos via algoritmos quânticos (VQLS/HHL) ou simuladores clássicos, permitindo pesquisa de ponta em **Quantum CFD**.
+The project extends OpenFOAM (Finite Volume Method) capabilities by introducing a hybrid architecture where complex linear systems can be exported and solved via quantum algorithms (VQLS/HHL) or classical simulators, enabling cutting-edge research in **Quantum CFD**.
 
-O foco é investigar a **difusão de soluto**, **transferência de calor com mudança de fase** (entalpia efetiva) e a **viabilidade de aceleradores quânticos** para problemas de engenharia de materiais.
+The focus is to investigate **solute diffusion**, **heat transfer with phase change** (effective enthalpy), and the **feasibility of quantum accelerators** for materials engineering problems.
 
 ---
 
-## 🧩 Arquitetura Híbrida
+## 🧩 Hybrid Architecture
 
 ```text
 ┌───────────────────────┐
-│     OpenFOAM (C++)    │  →  Discretização FVM & Física do Contínuo
-│ (teseLB_definitive)   │     (Navier-Stokes, Energia, Espécies)
+│     OpenFOAM (C++)    │  →  FVM Discretization & Continuum Physics
+│ (teseLB_definitive)   │     (Navier-Stokes, Energy, Species)
 └──────────┬────────────┘
-           │  (Exportação de Matriz A e Vetor b)
+           │  (Matrix A and Vector b Export)
            ▼
 ┌───────────────────────┐
-│    Bridge (File I/O)  │  →  Intercâmbio de Dados (.dat)
+│    Bridge (File I/O)  │  →  Data Exchange (.dat)
 │ (A_matrix / b_vector) │
 └──────────┬────────────┘
            │
            ▼
 ┌───────────────────────┐
 │    Quantum Backend    │  →  Python + Qiskit + SciPy
-│  (quantum_solver.py)  │     (VQLS, HHL, Clássico Iterativo)
+│  (quantum_solver.py)  │     (VQLS, HHL, Classical Iterative)
 └───────────────────────┘
 ```
 
 ---
 
-## 🎓 Jornada da Física (Modelo de Solidificação)
+## 🎓 Physics Journey (Solidification Model)
 
-O solver implementa um modelo de solidificação puramente difusivo com acoplamento térmico e solutal.
+The solver implements a purely diffusive solidification model with thermal and solutal coupling.
 
-## ✳️ Funcionalidades Principais
+## ✳️ Main Features
 
-**Método da Entalpia Efetiva**: Tratamento do calor latente sem termos de fonte explícitos, garantindo estabilidade numérica.
+**Effective Enthalpy Method**: Treatment of latent heat without explicit source terms, ensuring numerical stability.
 
-**Transporte de Soluto**: Equação de conservação de espécies acoplada à fração sólida ($G_s$).
+**Solute Transport**: Species conservation equation coupled to the solid fraction ($G_s$).
 
-**Termo de Fonte de Darcy**: Modelagem da zona pastosa como meio poroso (Carman-Kozeny) no momento.
+**Darcy Source Term**: Modeling the mushy zone as a porous medium (Carman-Kozeny) in the momentum equation.
 
-**Correção de Densidade Boussinesq**: Convecção natural induzida por gradientes térmicos e solutais.
+**Boussinesq Density Correction**: Natural convection induced by thermal and solutal gradients.
 
 ___
 
-## 🗂️ Jornada Computacional (Solver Híbrido)
+## 🗂️ Computational Journey (Hybrid Solver)
 
-O núcleo diferencial é solver em C++, mas o sistema linear algébrico ($Ax=b$) pode ser interceptado.
+The differential core is solved in C++, but the algebraic linear system ($Ax=b$) can be intercepted.
 
-## 🧠 Solucionador Quântico (`quantum_solver.py`)
+## 🧠 Quantum Solver (`quantum_solver.py`)
 
-**Modo Clássico (Baseline)**: Uso de `scipy.sparse.linalg.spsolve` ou `BiCGSTAB` para validação rápida.
+**Classical Mode (Baseline)**: Uses `scipy.sparse.linalg.spsolve` or `BiCGSTAB` for fast validation.
 
-**Modo Quântico Simulado**: Uso do `AerSimulator` do Qiskit para emular hardware quântico.
+**Simulated Quantum Mode**: Uses Qiskit's `AerSimulator` to emulate quantum hardware.
 
-**Configuração Dinâmica**: Controle via `solver_settings.json` sem recompilar o código C++.
+**Dynamic Configuration**: Control via `solver_settings.json` without recompiling C++ code.
 
 ```json
 {
@@ -83,82 +83,82 @@ O núcleo diferencial é solver em C++, mas o sistema linear algébrico ($Ax=b$)
 
 ___
 
-## ⚙️ Estrutura Técnica e Decisões
+## ⚙️ Technical Structure and Decisions
 
-| Tema | Estratégia | Benefício |
+| Topic | Strategy | Benefit |
 | :--- | :--- | :--- |
-| **Integração C++/Python** | Arquivos de Texto (`.dat`) | Desacoplamento total e facilidade de debug |
-| **Matrizes Esparsas** | Formato COO/LDU | Eficiência no armazenamento de malhas grandes |
-| **Hard-coded Physics** | Propriedades termofísicas fixas | Foco na validação numérica do método |
-| **Validação Cruzada** | Casos `classic` vs `definitive` | Garantia de que o novo solver reproduz benchmarks |
-| **Performance Log** | CSV Timestamping | Análise quantitativa do "Quantum Overhead" |
+| **C++/Python Integration** | Text Files (`.dat`) | Total decoupling and ease of debugging |
+| **Sparse Matrices** | COO/LDU Format | Efficiency in storing large meshes |
+| **Hard-coded Physics** | Fixed thermophysical properties | Focus on numerical validation of the method |
+| **Cross Validation** | `classic` vs `definitive` cases | Guarantee that the new solver reproduces benchmarks |
+| **Performance Log** | CSV Timestamping | Quantitative analysis of "Quantum Overhead" |
 
 ___
 
-## 🧪 Casos de Validação
+## 🧪 Validation Cases
 
-- ✅ **validationCase_classic**: Caso base usando modelos legados de Bernardo/Gibbs.
-- ✅ **validationCase_definitive**: Caso principal validando o modelo de Entalpia Efetiva.
-- ✅ **validationCase_definitive_qc**: Validação do fluxo de trabalho quântico (OpenFOAM -> Python -> OpenFOAM).
-- ✅ **teseLB_solute**: Testes focados puramente na segregação de soluto.
+- ✅ **validationCase_classic**: Base case using legacy models from Bernardo/Gibbs.
+- ✅ **validationCase_definitive**: Main case validating the Effective Enthalpy model.
+- ✅ **validationCase_definitive_qc**: Validation of the quantum workflow (OpenFOAM -> Python -> OpenFOAM).
+- ✅ **teseLB_solute**: Tests focused purely on solute segregation.
 
 ---
 
-## 🧩 Estrutura de Pastas
+## 🧩 Folder Structure
 
 ```bash
 teseLB/
-├── teseLB_definitive/          # Código fonte C++ do solver principal
-│   ├── quantumSolve.H          # Interface de interceptação da matriz
-│   ├── quantum_solver.py       # Backend Python (Link Simbólico)
-│   ├── TEqn.H                  # Equação da Energia
-│   └── wEqn.H                  # Equação de Transporte de Espécies
-├── validationCase_definitive/  # Caso de teste padrão (Clássico)
-├── validationCase_definitive_qc/ # Caso de teste configurado para Quântico
-│   ├── solver_settings.json    # Configuração do backend
-│   ├── README_quantum.md       # Documentação específica do fluxo QC
-│   └── solver_performance.csv  # Logs de tempo de execução
-├── classic_baseline/           # Dados experimentais e legados para comparação
-└── README.md                   # Este arquivo
+├── teseLB_definitive/          # Main solver C++ source code
+│   ├── quantumSolve.H          # Matrix interception interface
+│   ├── quantum_solver.py       # Python Backend
+│   ├── TEqn.H                  # Energy Equation
+│   └── wEqn.H                  # Species Transport Equation
+├── validationCase_definitive/  # Standard test case (Classical)
+├── validationCase_definitive_qc/ # Test case configured for Quantum
+│   ├── solver_settings.json    # Backend configuration
+│   ├── README_quantum.md       # Specific QC workflow documentation
+│   └── solver_performance.csv  # Execution time logs
+├── classic_baseline/           # Experimental and legacy data for comparison
+└── README.md                   # This file
 ```
 
 ___
 
-## 🕒 Histórico de Desenvolvimento (Commit Log Humano)
+## 🕒 Development History (Human Commit Log)
 
-### 🧩 Fase 1 — Fundação e Baseline Clássico
-**Período:** Janeiro 2026
-**Resumo:**
-- Estabelecimento do `classic_baseline` recuperando dados de Bernardo e Gibbs.
-- Implementação inicial do modelo difusivo simples.
-- Comparação de resultados ($G_s$ evolution) para garantir consistência física inicial.
+### 🧩 Phase 1 — Foundation and Classical Baseline
+**Period:** January 2026
+**Summary:**
+- Establishment of `classic_baseline` retrieving data from Bernardo and Gibbs.
+- Initial implementation of the simple diffusive model.
+- Comparison of results ($G_s$ evolution) to ensure initial physical consistency.
 
-### 🎓 Fase 2 — Implementação da Entalpia Efetiva
-**Período:** Meio de Janeiro 2026
-**Resumo:**
-- Criação do `teseLB_diffusive_enthalpy`.
-- Remoção de termos de fonte explícitos de calor latente para aumentar estabilidade.
-- Adoção de $C_p^{eff}$ e $\alpha_{eff}$ baseados na termodinâmica da mudança de fase.
-- Validação da monotonicidade do crescimento da fração sólida.
+### 🎓 Phase 2 — Effective Enthalpy Implementation
+**Period:** Mid-January 2026
+**Summary:**
+- Creation of `teseLB_diffusive_enthalpy`.
+- Removal of explicit latent heat source terms to increase stability.
+- Adoption of $C_p^{eff}$ and $\alpha_{eff}$ based on phase change thermodynamics.
+- Validation of solid fraction growth monotonicity.
 
-### 🧠 Fase 3 — Solver Definitivo e Refatoração
-**Período:** Final de Janeiro 2026
-**Resumo:**
-- Consolidação no `teseLB_definitive`.
-- Limpeza de código (`TEqn.H`, `solidification.H`).
-- Integração robusta das equações de transporte solutal (`wEqn.H`).
-- Geração de gráficos comparativos automatizados (`plot_gs_average.py`).
+### 🧠 Phase 3 — Definitive Solver and Refactoring
+**Period:** Late January 2026
+**Summary:**
+- Consolidation into `teseLB_definitive`.
+- Code cleanup (`TEqn.H`, `solidification.H`).
+- Robust integration of solutal transport equations (`wEqn.H`).
+- Generation of automated comparative plots (`plot_gs_average.py`).
 
-### 🚀 Fase 4 — A Fronteira Quântica
-**Período:** Fevereiro 2026
-**Resumo:**
-- Desenvolvimento da interface `quantumSolve.H` para extração de matrizes LDU.
-- Criação do `quantum_solver.py` com suporte a Qiskit.
-- Implementação de log de performance e suporte a VQLS/HHL.
-- Criação do ambiente de validação `validationCase_definitive_qc`.
-- Documentação do fluxo híbrido e análise de overhead computacional.
+### 🚀 Phase 4 — The Quantum Frontier
+**Period:** February 2026
+**Summary:**
+- Development of the `quantumSolve.H` interface for LDU matrix extraction.
+- Creation of `quantum_solver.py` with Qiskit support.
+- Implementation of performance logging and VQLS/HHL support.
+- Creation of the validation environment `validationCase_definitive_qc`.
+- Documentation of the hybrid flow and computational overhead analysis.
 
 ---
 
-> 💬 *"Este projeto não é apenas um solver CFD, é uma ponte entre a engenharia de materiais clássica e a próxima geração de computação de alto desempenho."*
+> 💬 *"This project is not just a CFD solver, it is a bridge between classical materials engineering and the next generation of high-performance computing."*
 > — **Leonardo Maximino Bernardo**, 2026
