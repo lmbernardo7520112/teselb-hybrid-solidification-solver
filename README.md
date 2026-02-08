@@ -7,6 +7,9 @@
 ![SciPy](https://img.shields.io/badge/SciPy-Solver-blue?style=for-the-badge&logo=scipy)
 ![C++](https://img.shields.io/badge/C++-Core-darkblue?style=for-the-badge&logo=cplusplus)
 
+> [!WARNING]
+> **Work In Progress (WIP)**: This project is currently under active development. Features, solvers, and quantum implementations are subject to change. Some physical models are undergoing strict validation, and potential errors are currently being tracked and addressed by the author.
+
 ---
 
 ## 📘 Descrição Geral
