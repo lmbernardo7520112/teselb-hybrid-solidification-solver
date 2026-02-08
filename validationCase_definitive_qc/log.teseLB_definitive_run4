@@ -1,0 +1,83 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+Build  : 13-cde978a97c93
+Exec   : teseLB_definitive
+Date   : Jan 30 2026
+Time   : 20:25:57
+Host   : "leonardomaximinobernardo"
+PID    : 24164
+I/O    : uncollated
+Case   : /home/leonardomaximinobernardo/My_projects/teseLB_quantico/teseLB/validationCase_definitive
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create mesh for time = 0
+
+
+PIMPLE: Convergence criteria found
+        p_rgh: tolerance 0.0001
+        U: tolerance 0.0001
+        h: tolerance 0.0001
+        "(k|epsilon|omega)": tolerance 0.001
+
+
+PIMPLE: Operating solver in transient mode with 1 outer corrector
+PIMPLE: Operating solver in PISO mode
+
+
+Reading thermophysical properties
+
+Reading field p_rgh
+
+Reading field U
+
+Reading/calculating face flux field phi
+
+Reading field T
+
+Reading field w
+
+Creating viscosity model
+
+Creating turbulence model
+
+Selecting turbulence model type RAS
+    Selecting RAS turbulence model kOmegaSST
+Reading field alphat
+
+Reading field difft
+
+
+Reading g
+No MRF models present
+
+Courant Number mean: 0 max: 0
+Selecting patchDistMethod meshWave
+
+ Starting time loop
+
+Courant Number mean: 0 max: 0
+Time = 0.5s
+
+
+
+--> FOAM FATAL IO ERROR: 
+keyword wFinal is undefined in dictionary "/home/leonardomaximinobernardo/My_projects/teseLB_quantico/teseLB/validationCase_definitive/system/fvSolution/solvers"
+
+file: /home/leonardomaximinobernardo/My_projects/teseLB_quantico/teseLB/validationCase_definitive/system/fvSolution/solvers from line 19 to 50.
+
+    From function const Foam::dictionary& Foam::dictionary::subDict(const Foam::word&) const
+    in file db/dictionary/dictionary.C at line 855.
+
+FOAM exiting
+

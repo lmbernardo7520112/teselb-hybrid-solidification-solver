@@ -1,0 +1,19 @@
+EXE_INC = \
+    -I. \
+    -I$(FOAM_SOLVERS)/buoyantBoussinesqSimpleFoam \
+    -I$(FOAM_SRC)/MomentumTransportModels/momentumTransportModels/lnInclude \
+    -I$(FOAM_SRC)/MomentumTransportModels/incompressible/lnInclude \
+    -I$(FOAM_SRC)/transportModels \
+    -I$(FOAM_SRC)/physicalProperties/lnInclude \
+    -I$(FOAM_SRC)/radiationModels/lnInclude \
+    -I$(FOAM_SRC)/sampling/lnInclude \
+    -I$(FOAM_SRC)/meshTools/lnInclude \
+    -I$(FOAM_SRC)/finiteVolume/lnInclude
+
+EXE_LIBS = \
+    -lmomentumTransportModels \
+    -lincompressibleMomentumTransportModels \
+    -lradiationModels \
+    -lfiniteVolume \
+    -lsampling \
+    -lmeshTools

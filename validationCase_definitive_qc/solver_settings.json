@@ -1,0 +1,5 @@
+{
+    "mode": "quantum",
+    "backend": "aer_simulator_statevector",
+    "use_qiskit": true
+}
